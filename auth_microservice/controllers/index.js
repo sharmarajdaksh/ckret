@@ -64,7 +64,7 @@ exports.signup = (req, res, next) => {
 					return User.create({
 						username,
 						password: hashedPassword,
-					});
+                    });
 				})
 				.then((newUser) => {
 					return newUser.save();
@@ -76,7 +76,7 @@ exports.signup = (req, res, next) => {
 				});
 		})
 		.catch((err) => {
-			console.log(`[ AUTH MICROSERVICE : LOGIN ERROR ]`);
+            console.log(`[ SIGNUP MICROSERVICE : LOGIN ERROR ]`);
 			next(err);
 		});
 };

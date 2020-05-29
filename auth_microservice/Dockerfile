@@ -4,9 +4,9 @@ WORKDIR /usr/app/
 
 RUN npm install -g pm2
 
-COPY ./secrets_microservice/package*.json ./
+COPY ./package*.json ./
 RUN npm install
 
-COPY ./secrets_microservice/ ./
+COPY . .
 
 CMD [ "pm2-runtime", "npm", "--", "start" ]

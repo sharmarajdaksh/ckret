@@ -1,0 +1,47 @@
+<nav class="navbar" role="navigation" aria-label="main navigation">
+  <div class="container">
+    <div class="navbar-brand">
+      <h1>cKret</h1>
+      <a
+        role="button"
+        [ngClass]="{
+          'navbar-burger': true,
+          burger: true,
+          'is-active': isExpanded
+        }"
+        aria-label="menu"
+        aria-expanded="true"
+        data-target="navbarBasicExample"
+        (click)="isExpanded = !isExpanded"
+      >
+        <span aria-hidden="true"></span>
+        <span aria-hidden="true"></span>
+        <span aria-hidden="true"></span>
+      </a>
+    </div>
+
+    <div
+      id="navbarBasicExample"
+      class="navbar-menu"
+      [ngClass]="{ 'is-active': isExpanded }"
+    >
+      <div class="navbar-end">
+        <div class="navbar-item">
+          <div class="buttons" *ngIf="!authService.isAuth">
+            <a class="button is-primary" [routerLink]="['auth', 'signup']">
+              Sign up
+            </a>
+            <a class="button is-info" [routerLink]="['auth', 'login']">
+              Log in
+            </a>
+          </div>
+          <div class="buttons" *ngIf="authService.isAuth">
+            <button class="button is-info" (click)="authService.logout()">
+              <strong>Logout</strong>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</nav>

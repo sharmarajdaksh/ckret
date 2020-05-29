@@ -1,4 +1,4 @@
-# CKRET: Secret Manager
+# CKRET: A backend for an authentication-based secret management service.
 
 The backend exposes API endpoints for clients to signup users, login users, and to use authentication tokens for storing and managing user secrets (where secrets basically mean key-value pairs, such as username-passswords, making this backend ideal for, say, a password manager webapp).
 
@@ -13,6 +13,15 @@ List of exposed API endpoints:
 * DELETE /secrets/:username/:id
 
 The microservice exposes and listens on :3000 by default at the router microservice. You can of course change that in the docker file and in the NodeJS code.
+
+## How to run this on your setup?
+
+To run this without having to setup up all of the requirements (Postgres, Redis, and NodeJS), you must have Docker and Docker-Compose installed.
+* `cd` into the directory
+* `docker-compose up`
+
+To stop the app
+* `docker-compose down`
 
 ## Is this just another CRUD app? What's special?
 
@@ -32,49 +41,5 @@ It's beauty is in it's architecture. The backend utilizes two independent micros
     * Only the initial GET request has to be passed to the secrets microservice. Consequent requests are simply responded to with the cached data. This results in **major** performance gains.
 
 ## Why a redis store, and not an actual database?
-
 * The data being cached in the redis store is essentially non-critical. Loss of the token will simply require a user to reauthenticate and get a new token. Loss of the cached userdata will simply cause a hit to system performance due to more db requests being made.
-* The redis store is there mainly for performance reasons and scaling, not for data storage. While a case for persisting the tokens may be made, I think the redis implementation suits the purpose of the architecture well enough currently.
-
-## The frontend
-
-The frontend single-page application meant to serve as an authenticated Secret Manager Application, made with Angular 9 to demonstrate the usability of [ckret-backend](https://github.com/sharmarajdaksh/ckret-backend).
-
-![Demo](cKret.gif)
-
-
-## How to run this on your setup?
-
-To run this without having to setup up all of the requirements (Postgres, Redis, and NodeJS), you must have Docker and Docker-Compose installed.
-* `cd` into the directory
-* `docker-compose up`
-* In case you're using docker for the first time, all I can say is be patient. First time builds can potentially take a lot of time depending on your network connection and disk io speed.
-* Once docker-compose up is done setting up the containers, you can view the app at http://localhost:8080/
-
-To stop the app
-* `docker-compose down`
-
-## Complete Application Architecture
-
-![Complete Application Architecture](ckret-full.png)
-
-## Is cKret the perfect password management solution?
-
-I'll have to say no. There are many things that can still be improved with this application. There are probably other issues also, but off the top of my head:
-* Frontend
-  * Add loader/spinner for login/signup waiting periods.
-  * Add animations and make the overall UI more interactive.
-  * Add show password option in Add value and signup/login form.
-  * Display error messages when login/signup or secret CRUD actions fail.
-  * Validation for forms; useful feedback in case of invalid input.
-* Backend
-  * Some of the error codes returned on requests are messed up.
-  * Real-time username checks to check if a username is taken (when trying to sign in), rather than only checking when form is submitted.
-
-## Like this app or want to know more?
-
-Let me know! Get my contact information from my github profile 🙂.
-
-## Like it enough to actually get your hands dirty? 
-
-Your PRs will be most welcome 😃.
+* The redis store is there mainly for performance reasons and scaling, not for data storage. While a case for persisting the tokens may be made, I think the redis implementation suits the purpose of the architecture well enough currently. 

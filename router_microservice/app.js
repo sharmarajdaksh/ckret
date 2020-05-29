@@ -7,6 +7,7 @@ const bodyParser = require('body-parser');
 const router = require('./routes');
 
 const PORT = process.env.PORT || 3000;
+const FRONTEND_URL = process.env.FRONTEND_URL;
 
 const app = express();
 
@@ -17,6 +18,13 @@ app.use((req, res, next) => {
 });
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
+
+app.use(function(req, res, next) {
+    res.header("Access-Control-Allow-Origin", `*`); // update to match the domain you will make the request from
+    res.header("Access-Control-Allow-Methods", "GET, POST, DELETE, PUT, OPTIONS"); // update to match the domain you will make the request from
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization");
+    next();
+  });
 
 app.use(router);
 

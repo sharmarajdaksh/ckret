@@ -57,6 +57,8 @@ exports.login = (req, res, next) => {
 exports.signup = (req, res, next) => {
 	const { username, password, confirmPassword } = req.body;
 
+	console.log(req.body);
+
 	if (password !== confirmPassword) {
 		return res.status(422).json({ message: 'Passwords do not match' });
 	}
@@ -79,7 +81,7 @@ exports.signup = (req, res, next) => {
 			}
 
 			if (response.data.message === 'Username taken') {
-				return res.status(421).json({
+				return res.status(422).json({
 					message: 'Username taken',
 				});
 			}
@@ -106,8 +108,8 @@ exports.getSecrets = (req, res, next) => {
 			}
 
 			return axios.get(SECRETS_URL + '/' + username).then((response) => {
-				res.status(200).json(response.data);
-
+                res.status(200).json(response.data);
+                
 				redisClient.hset(
 					username,
 					'secrets',
@@ -161,35 +163,6 @@ exports.updateSecret = (req, res, next) => {
 				return res.status(404).json({
 					message:
 						'Secret for the current user with passed id not found',
-				});
-			}
-			next(err);
-		});
-};
-
-exports.updateSecret = (req, res, next) => {
-	const username = req.params.username;
-	const secretId = req.params.secretId;
-
-	const { key, value } = req.body;
-
-	axios
-		.put(SECRETS_URL + '/' + username + '/' + secretId, { key, value })
-		.then((response) => {
-			res.status(200).json(response.data);
-
-			redisClient.hdel(username, 'secrets');
-		})
-		.catch((err) => {
-			if (err.response.status === 404) {
-				return res.status(404).json({
-					message:
-						'Secret for the current user with passed id not found',
-				});
-			}
-			if (err.response.status === 403) {
-				return res.status(403).json({
-					message: 'Unauthorized',
 				});
 			}
 			next(err);

@@ -1,0 +1,94 @@
+<div
+  class="form-small"
+  style="
+    max-width: 400px;
+    margin: auto;
+    margin-top: 2rem;
+    width: 100%;
+  "
+>
+  <form (ngSubmit)="isSignup ? signup() : login()" #authForm="ngForm" novalidate>
+    <div class="field">
+      <label class="label">Username</label>
+      <div class="control has-icons-left has-icons-right">
+        <input
+          class="input"
+          type="text"
+          placeholder="Yours truly"
+          name="username"
+          [(ngModel)]="username"
+          required
+        />
+        <span class="icon is-small is-left">
+          <fa-icon [icon]="faUser"></fa-icon>
+        </span>
+      </div>
+    </div>
+
+    <div class="field">
+      <label class="label">Password</label>
+      <div class="control has-icons-left has-icons-right">
+        <input
+          class="input"
+          type="password"
+          name="password"
+          placeholder="Your cKret password"
+          [(ngModel)]="password"
+          required
+        />
+        <span class="icon is-small is-left">
+          <fa-icon [icon]="faLock"></fa-icon
+        ></span>
+      </div>
+      <!-- <p class="help is-danger">This email is invalid</p> -->
+    </div>
+
+    <div class="field" *ngIf="isSignup">
+      <label class="label">Confirm Password</label>
+      <div class="control has-icons-left has-icons-right">
+        <input
+          class="input"
+          type="password"
+          name="confirmPassword"
+          placeholder="Confirm your cKret password"
+          [(ngModel)]="confirmPassword"
+          required
+        />
+        <span class="icon is-small is-left">
+          <fa-icon [icon]="faLock"></fa-icon
+        ></span>
+      </div>
+      <!-- <p class="help is-danger">This email is invalid</p> -->
+    </div>
+
+    <br />
+
+    <div *ngIf="isSignup">
+      <div class="buttons has-addons is-right">
+        <div class="is-right">
+          <button type="submit" class="button is-primary is-outlined">
+            Sign up
+          </button>
+        </div>
+      </div>
+      <p>
+        Been here before?
+        <a [routerLink]="['/auth', 'login']">Log in to cKret</a>
+      </p>
+    </div>
+
+    <div *ngIf="!isSignup">
+      <div class="buttons has-addons is-right">
+        <div class="is-right">
+          <button type="submit" class="button is-primary is-outlined">
+            Login
+          </button>
+        </div>
+      </div>
+      <p style="text-align: center;">
+        New here?
+        <a [routerLink]="['/auth', 'signup']">Sign up for cKret</a>
+      </p>
+    </div>
+  </form>
+</div>

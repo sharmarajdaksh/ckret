@@ -21,17 +21,15 @@ services:
 
     secrets_microservice:
         build:
-            context: .
-            dockerfile: Dockerfile.secrets
+            context: ./secrets_microservice
         restart: always
         volumes:
             - /usr/app/node_modules
             - ./secrets_microservice:/usr/app/
-    
+
     auth_microservice:
         build:
-            context: .
-            dockerfile: Dockerfile.auth
+            context: ./auth_microservice
         restart: always
         volumes:
             - /usr/app/node_modules
@@ -39,11 +37,23 @@ services:
 
     router_microservice:
         build:
-            context: .
-            dockerfile: Dockerfile.router
+            context: ./router_microservice
         restart: always
-        ports:
-            - 3000:3000
         volumes:
             - /usr/app/node_modules
             - ./router_microservice:/usr/app/
+
+    angular_client:
+        build:
+            context: ./angular_client
+        restart: always
+        volumes:
+            - /usr/app/node_modules
+            - ./angular_client:/usr/app/
+
+    nginx:
+        build:
+            context: ./nginx
+        restart: always
+        ports:
+            - 8080:80
